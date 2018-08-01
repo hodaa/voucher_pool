@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Traits\Payload;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
-use App\Http\Repositories\VoucherRepo;
+use App\Repositories\VoucherRepo;
 
 class VoucherController extends BaseController
 {
@@ -65,28 +65,5 @@ class VoucherController extends BaseController
 //
 ////        \Session::flash('flash_message', $created . ' Voucher Code Created Successfully');
 //        return redirect('/');
-    }
-
-
-    /** verfiy that this code is still valid to this recipient
-     * @param Request $request
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function verify(Request $request)
-    {
-        echo $this->voucherRepo->verifyVoucherCode($request);
-    }
-
-    /** get all vouchers by  for recipients  by email
-     * @param Request $request
-     */
-    public function getVouchersByRecipient(Request $request)
-    {
-        $codes = $this->voucherRepo->getVoucherByEmail($request);
-        if (count($codes)) {
-            return $this->success(200, $codes);
-        } else {
-            return $this->fail(200, "No Codes Valid for this Recipients");
-        }
     }
 }

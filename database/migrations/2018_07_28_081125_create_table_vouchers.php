@@ -18,7 +18,6 @@ class CreateTableVouchers extends Migration
             $table->string('code')->unique();
             $table->integer('recipient_id')->references('id')->on('recipients')->onDelete('cascade');
             $table->integer('offer_id')->references('id')->on('offers')->onDelete('cascade');
-            $table->tinyInteger('status')->defalut(0);
             $table->string('expire_date');
             $table->string('used_on')->nullable();
             $table->timestamps();

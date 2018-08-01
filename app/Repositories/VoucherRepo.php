@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Repositories;
+namespace App\Repositories;
 
 use App\Models\VoucherCode;
 use App\Models\Recipient;
@@ -10,7 +10,6 @@ use Laravel\Lumen\Routing\ProvidesConvenienceMethods;
 use App\Traits\Payload;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class VoucherRepo
 {
@@ -67,7 +66,8 @@ class VoucherRepo
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errors = $errors->all();
-            return redirect()->route('profile', ['errors' => $errors]);
+            return redirect()->back()->with($errors);
+//            return redirect()->route('profile', ['errors' => $errors]);
         }
 
         $recipients = Recipient::pluck('id');
@@ -87,33 +87,26 @@ class VoucherRepo
     }
 
 
-    public function verifyVoucherCode($data)
+    public function verifyVoucherCode($request)
     {
-        $validator = Validator::make($data, [
+        $this->validateApi($request->all(), [
             'email' => 'required|email',
-            'code' => 'required|max:12',
+            'code'  => 'required|min:6'
         ]);
-
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator);
-        }
-
-        $code = $data->input('code');
-        $email = $data->input('email');
-        $voucher = VoucherCode::with('offer')->where('code', $code)->
-        whereNull('used_on')->
-        whereHas('recipient', function ($q) use ($email) {
-            $q->where('email', $email);
-        })->first();
+        $code = $request->input('code');
+        $email = $request->input('email');
+        $voucher = VoucherCode::with('offer')->where('code', $code)
+            ->whereNull('used_on')
+            ->whereHas('recipient', function ($q) use ($email) {
+                $q->where('email', $email);
+            })->first();
 
         if ($voucher !== null) {
-            $voucher->update(['usedOn' => Carbon::now()]);
+            $voucher->update(['used_on' => Carbon::now()]);
             $discount = $voucher->offer->discount;
-
-
-            echo $this->success(200, $discount);
+            echo $this->success(200, ["offer_discount" => $discount]);
         } else {
-            return response()->json(['status' => 'error', 'message' => "No Vouchers for this email"], 500);
+            echo $this->fail(500, "This Voucher is not  valid");
         }
     }
 
@@ -135,9 +128,13 @@ class VoucherRepo
             'email' => 'required|email',
         ]);
         $email = $request->input('email');
-        $codes = VoucherCode::whereHas('recipient', function ($q) use ($email) {
+        $codes = VoucherCode::with('offer')->whereHas('recipient', function ($q) use ($email) {
             $q->where('email', $email);
-        })->where('expire_date', '<', Carbon::now())->pluck('code');
+        })->where('expire_date', '<', Carbon::now())->get()->map(function ($item) {
+            $result['code'] = $item->code;
+            $result['offer_name'] = $item->offer->name;
+            return $result;
+        });
 
         return $codes;
     }

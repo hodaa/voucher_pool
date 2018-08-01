@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
          */
         $recipients[] = DB::table('recipients')
             ->insertGetId([
-                'name'          => 'John Doe',
-                'email'         => 'john@doe.com',
+                'name'          => 'hoda',
+                'email'         => 'hoda.hussin@gmail.com',
                 'created_at'    => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
                     ->insert([
                         'offer_id'  => $offer,
                         'recipient_id'      => $recipient,
-                        'code'              => str_random(12),
+                        'code'              => str_random(8),
                         'used_on'           => (mt_rand(0, 2) <= 1) ? $faker->dateTimeBetween('-2 months', 'now') : NULL,
                         'created_at'        => Carbon::now()->format('Y-m-d H:i:s'),
                         'updated_at'        => Carbon::now()->format('Y-m-d H:i:s'),

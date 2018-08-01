@@ -44,13 +44,13 @@
                         @foreach($data['codes'] as $code)
                             <tr>
                                 <td>{{$code->code}}</td>
-                                <td>@if($code->status)
+                                <td>@if($code->used_on)
                                         <span class="glyphicon glyphicon-ok"></span>
                                     @else<span class="glyphicon glyphicon-remove"></span>
                                     @endif
                                 </td>
                                 <td>{{$code->recipient->email}}</td>
-                                <td>{{$code->used_date}}</td>
+                                <td>@if($code->used_on){{ date('d.m.Y', strtotime($code->used_on)) }} @endif</td>
                             </tr>
 
                         @endforeach
