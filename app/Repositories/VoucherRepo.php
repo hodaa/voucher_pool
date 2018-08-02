@@ -29,11 +29,17 @@ class VoucherRepo
 
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @param null $search
+     * @return VoucherCode|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder
      */
-    public function getAllVouchers()
+    public function getAllVouchers($search = null)
     {
-        return VoucherCode::with('recipient')->paginate(10);
+        $query = VoucherCode::with('recipient');
+        if ($search) {
+            $query = $query->where('code', 'like', '%' . $search . '%');
+        }
+        $query = $query->paginate(10);
+        return $query;
     }
 
 

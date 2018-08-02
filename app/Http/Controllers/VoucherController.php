@@ -23,14 +23,26 @@ class VoucherController extends BaseController
     /**get data to be viewed in home page
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        $search='';
+        if($request->input('q')){
+            $search= $request->input('q');
+        }
         $data = $this->voucherRepo->getVoucherStatistics();
-        $data['codes'] = $this->voucherRepo->getAllVouchers();
+        $data['codes'] = $this->voucherRepo->getAllVouchers($search);
 
         return view('index', ["data" => $data]);
     }
 
+    function search(Request $request){
+
+        if($request->input('q')){
+            $search= $request->input('q');
+        }
+        $data['codes'] = $this->voucherRepo->search($search=null);
+    }
 
     /** go to add page to add voucher codes
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

@@ -31,7 +31,7 @@
                 <div class="row">
                     <a type="button" class="btn btn-info col-md-2 pull-left" href="{{route('create')}}">Add Voucher
                         Code</a>
-                    <input type="text" class="input-group pull-right col-md-3" placeholder="search">
+                    <input type="text" class="input-group pull-right col-md-3" placeholder="search" id="search">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
                 <br>
