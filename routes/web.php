@@ -10,9 +10,6 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-//$router->group(['middleware' => ['web']], function ($router) {
-    $router->get('/', 'VoucherController@index');
-    $router->get('/create',['as'=>'profile','uses'=> 'VoucherController@create']);
-    $router->post('/save', 'VoucherController@save');
-//});
-
+$router->get('/', ['as' => 'home','uses'=> 'VoucherController@index']);
+$router->get('/create', ['as' => 'create', 'uses' => 'VoucherController@create']);
+$router->post('/save', 'VoucherController@save');

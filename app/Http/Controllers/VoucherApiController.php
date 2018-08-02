@@ -25,14 +25,31 @@ class VoucherApiController
      */
     public function verify(Request $request)
     {
-        echo $this->voucherRepo->verifyVoucherCode($request);
+        $this->validateApi($request->all(), [
+            'email' => 'required|email',
+            'code' => 'required|min:6'
+        ]);
+
+        $voucher = $this->voucherRepo->verifyVoucherCode($request);
+        if ($voucher !== null) {
+            $voucher->update(['used_on' => Carbon::now()]);
+            $discount = $voucher->offer->discount;
+            echo $this->success(200, ["offer_discount" => $discount]);
+        } else {
+            echo $this->fail(500, "This Voucher is not  valid");
+        }
+
     }
 
     /** get all vouchers by  for recipients  by email
      * @param Request $request
      */
+
     public function getVouchersByRecipient(Request $request)
     {
+        $this->voucherRepo->validateApi($request->all(), [
+            'email' => 'required|email',
+        ]);
         $codes = $this->voucherRepo->getVoucherByEmail($request);
         if (count($codes)) {
             return $this->success(200, $codes);

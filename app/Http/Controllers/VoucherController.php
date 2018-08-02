@@ -6,6 +6,7 @@ use App\Traits\Payload;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\Repositories\VoucherRepo;
+use Validator;
 
 class VoucherController extends BaseController
 {
@@ -41,29 +42,24 @@ class VoucherController extends BaseController
     }
 
 
-    /** ​ generate​ ​ for​ ​ each​ ​ Recipient​ ​ a Voucher​ ​ Code
+    /** ​ generate​ ​ for​ ​ each​ ​ Recipient​ ​ a Voucher​ ​ Codes
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function save(Request $request)
     {
-//
-//        throw new HttpResponseException(response()->json( $this->validate($request, [
-//            'expire_date' => 'required|date_format:d-m-Y',
-//        ]), 422));
-//        $this->validate($request, [
-//            'expire_date' => 'required|date_format:d-m-Y',
-//        ]);
-        //$request->session()->flash('status', 'Task was successful!');
+        $validator = Validator::make($request->all(), [
+            'expire_date' => 'required|date_format:d-m-Y',
+        ]);
 
-        //ensure that same voucher not created for same expire-date same product
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return redirect()->route('create', ['errors' => $errors->all()]);
+        }
 
-        $created = $this->voucherRepo->createVoucherCode($request);
-//
-////        $request->session()->reflash();
-////        $request->session()->flash('status', 'Task was successful!');
-//
-////        \Session::flash('flash_message', $created . ' Voucher Code Created Successfully');
-//        return redirect('/');
+        $created=$this->voucherRepo->createVoucherCode($request);
+        if($created){
+            return redirect()->route('home', ['created' => $created]);
+        }
     }
 }

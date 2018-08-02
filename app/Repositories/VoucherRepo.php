@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Laravel\Lumen\Routing\ProvidesConvenienceMethods;
 use App\Traits\Payload;
 use Validator;
-use Illuminate\Support\Facades\Redirect;
+
 
 class VoucherRepo
 {
@@ -55,21 +55,12 @@ class VoucherRepo
         return $unique_code;
     }
 
+    /**create Voucher codes for each recipients
+     * @param $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function createVoucherCode($request)
     {
-        $request = $request->all();
-        $validator = Validator::make($request, [
-            'expire_date' => 'required|date_format:d-m-Y',
-        ]);
-
-
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            $errors = $errors->all();
-            return redirect()->back()->with($errors);
-//            return redirect()->route('profile', ['errors' => $errors]);
-        }
-
         $recipients = Recipient::pluck('id');
 
         $data = [];
@@ -87,12 +78,11 @@ class VoucherRepo
     }
 
 
+    /**
+     * @param $request
+     */
     public function verifyVoucherCode($request)
     {
-        $this->validateApi($request->all(), [
-            'email' => 'required|email',
-            'code'  => 'required|min:6'
-        ]);
         $code = $request->input('code');
         $email = $request->input('email');
         $voucher = VoucherCode::with('offer')->where('code', $code)
@@ -101,32 +91,35 @@ class VoucherRepo
                 $q->where('email', $email);
             })->first();
 
-        if ($voucher !== null) {
-            $voucher->update(['used_on' => Carbon::now()]);
-            $discount = $voucher->offer->discount;
-            echo $this->success(200, ["offer_discount" => $discount]);
-        } else {
-            echo $this->fail(500, "This Voucher is not  valid");
-        }
+        return $voucher;
+
     }
 
 
+    /**
+     * @param $request
+     * @param $rules
+     */
     public function validateApi($request, $rules)
     {
         $validator = Validator::make($request, $rules);
         $errors = $validator->errors();
         $errors = $errors->all();
         if (count($errors)) {
-            echo $this->fail(400, $errors);
+            echo $this->fail(422, $errors);
             exit();
         }
     }
 
+    /**
+     * @param $request
+     * @return VoucherCode[]|\Illuminate\Database\Eloquent\Builder[]
+     * |\Illuminate\Database\Eloquent\Collection|
+     * \Illuminate\Support\Collection
+     */
     public function getVoucherByEmail($request)
     {
-        $this->validateApi($request->all(), [
-            'email' => 'required|email',
-        ]);
+
         $email = $request->input('email');
         $codes = VoucherCode::with('offer')->whereHas('recipient', function ($q) use ($email) {
             $q->where('email', $email);

@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('title', 'Home')
 @section('content')
+    @if (app('request')->input('created') )
+            <div class="success alert-success">
+                <span> Voucher Codes Created successfully</span>
+            </div>
+
+    @endif
     <div class="wrapper panel panel-default">
         <div class="row">
             <h1>Voucher Pool</h1>
@@ -23,7 +29,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <a type="button" class="btn btn-info col-md-2 pull-left" href="{{route('profile')}}">Add Voucher Code</a>
+                    <a type="button" class="btn btn-info col-md-2 pull-left" href="{{route('create')}}">Add Voucher
+                        Code</a>
                     <input type="text" class="input-group pull-right col-md-3" placeholder="search">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
