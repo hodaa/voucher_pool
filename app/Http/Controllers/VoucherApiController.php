@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Traits\Payload;
 use App\Repositories\VoucherRepo;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class VoucherApiController
 {
-
     private $voucherRepo;
     use Payload;
 
@@ -25,7 +25,7 @@ class VoucherApiController
      */
     public function verify(Request $request)
     {
-        $this->validateApi($request->all(), [
+        $this->voucherRepo->validateApi($request->all(), [
             'email' => 'required|email',
             'code' => 'required|min:6'
         ]);
@@ -38,7 +38,6 @@ class VoucherApiController
         } else {
             echo $this->fail(500, "This Voucher is not  valid");
         }
-
     }
 
     /** get all vouchers by  for recipients  by email
@@ -57,5 +56,4 @@ class VoucherApiController
             return $this->fail(404, "No Codes Valid for this Recipients");
         }
     }
-
 }
