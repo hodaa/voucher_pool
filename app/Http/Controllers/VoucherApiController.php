@@ -2,47 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\VoucherService;
 use App\Traits\Payload;
-use App\Repositories\VoucherRepo;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Validator;
 
 class VoucherApiController
 {
-    private $voucherRepo;
+    private $voucherService;
     use Payload;
 
 
-    public function __construct(VoucherRepo $voucherRepo)
+    public function __construct(VoucherService $voucherService)
     {
-        $this->voucherRepo = $voucherRepo;
+        $this->voucherService = $voucherService;
     }
 
-
-    /** verfiy that this code is still valid to this recipient
+    /**
      * @param Request $request
-     * @throws \Illuminate\Validation\ValidationException
+     * @return \Illuminate\Http\JsonResponse
      */
     public function verify(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'code' => 'required|min:6'
-        ]);
-        $errors = $validator->errors();
-        if (count($errors)) {
-            return $this->fail(422, $errors->all());
-        }
+        return $this->voucherService->verifyVoucherCode($request);
 
-        $voucher = $this->voucherRepo->verifyVoucherCode($request);
-        if ($voucher !== null) {
-            $voucher->update(['used_on' => Carbon::now()]);
-            $discount = $voucher->offer->discount;
-            return $this->success(200, ["offer_discount" => $discount]);
-        } else {
-            return $this->fail(500, "This Voucher is Invalid");
-        }
     }
 
     /**
@@ -52,18 +34,7 @@ class VoucherApiController
 
     public function getVouchersByRecipient(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-        ]);
-        $errors = $validator->errors();
-        if (count($errors)) {
-            return $this->fail(422, $errors->all());
-        }
-        $codes = $this->voucherRepo->getVoucherByEmail($request);
-        if (count($codes)) {
-            return $this->success(200, $codes);
-        } else {
-            return $this->fail(404, "No Codes Valid for this Recipients");
-        }
+       return  $this->voucherService->getVoucherByEmail($request);
+
     }
 }

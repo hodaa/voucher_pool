@@ -5,51 +5,44 @@ namespace App\Http\Controllers;
 use App\Traits\Payload;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
-use App\Repositories\VoucherRepo;
 use Validator;
+use App\Services\VoucherService;
 
 class VoucherController extends BaseController
 {
-    private $voucherRepo;
+    private $voucherService;
     use Payload;
 
 
-    public function __construct(VoucherRepo $voucherRepo)
+    public function __construct(VoucherService $voucherService)
     {
-        $this->voucherRepo = $voucherRepo;
+        $this->voucherService = $voucherService;
     }
 
 
-    /**get data to be viewed in home page
+    /**
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
-
         $search='';
         if($request->input('q')){
             $search= $request->input('q');
         }
-        $data = $this->voucherRepo->getVoucherStatistics();
-        $data['codes'] = $this->voucherRepo->getAllVouchers($search);
+        $data = $this->voucherService->getVoucherStatistics();
+        $data['codes'] = $this->voucherService->getAllVouchers($search);
 
         return view('index', ["data" => $data]);
     }
 
-    function search(Request $request){
-
-        if($request->input('q')){
-            $search= $request->input('q');
-        }
-        $data['codes'] = $this->voucherRepo->search($search=null);
-    }
 
     /** go to add page to add voucher codes
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
-        $offers = $this->voucherRepo->getAllOffers();
+        $offers = $this->voucherService->getAllOffers();
         return view('add', ["offers" => $offers]);
     }
 
@@ -69,7 +62,7 @@ class VoucherController extends BaseController
             return redirect()->route('create', ['errors' => $errors->all()]);
         }
 
-        $created=$this->voucherRepo->createVoucherCode($request);
+        $created=$this->voucherService->createVoucherCode($request);
         if($created){
             return redirect()->route('home', ['created' => $created]);
         }

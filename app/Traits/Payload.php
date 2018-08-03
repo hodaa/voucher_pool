@@ -13,10 +13,10 @@ trait Payload
 
     }
 
-    public function fail($code, $message, $data = null)
+    public function fail($code, $message)
     {
         return response()->json([
-            'status' => 'OK',
+            'status' => 'Error',
             'code' => $code,
             'message' => $message], $code);
     }

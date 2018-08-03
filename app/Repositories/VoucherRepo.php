@@ -89,6 +89,15 @@ class VoucherRepo
      */
     public function verifyVoucherCode($request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'code' => 'required|min:6'
+        ]);
+        $errors = $validator->errors();
+        if (count($errors)) {
+            return $this->fail(422, $errors->all());
+        }
+
         $code = $request->input('code');
         $email = $request->input('email');
         $voucher = VoucherCode::with('offer')->where('code', $code)
@@ -97,25 +106,17 @@ class VoucherRepo
                 $q->where('email', $email);
             })->first();
 
-        return $voucher;
-
-    }
-
-
-    /**
-     * @param $request
-     * @param $rules
-     */
-    public function validateApi($request, $rules)
-    {
-        $validator = Validator::make($request, $rules);
-        $errors = $validator->errors();
-        $errors = $errors->all();
-        if (count($errors)) {
-           return $this->fail(422, $errors);
-           exit();
+        if ($voucher !== null) {
+            $voucher->update(['used_on' => Carbon::now()]);
+            $discount = $voucher->offer->discount;
+            return $this->success(200, ["offer_discount" => $discount]);
+        } else {
+            return $this->fail(500, "This Voucher is Invalid");
         }
+
+
     }
+
 
     /**
      * @param $request
@@ -126,6 +127,14 @@ class VoucherRepo
     public function getVoucherByEmail($request)
     {
 
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+        $errors = $validator->errors();
+        if (count($errors)) {
+            return $this->fail(422, $errors->all());
+        }
+
         $email = $request->input('email');
         $codes = VoucherCode::with('offer')->whereHas('recipient', function ($q) use ($email) {
             $q->where('email', $email);
@@ -135,6 +144,10 @@ class VoucherRepo
             return $result;
         });
 
-        return $codes;
+        if (count($codes)) {
+            return $this->success(200, $codes);
+        } else {
+            return $this->fail(404, "No Codes Valid for this Recipients");
+        }
     }
 }
