@@ -1,7 +1,7 @@
 # Voucher Pool Microservice
 
 ## General description
-The voucher pool microservice was developed using lumen 5.6, Bootstrap 4 and jQuery libraries Dynatable for dynamic tables and datepicker.
+The voucher pool microservice was developed using lumen 5.6, Bootstrap 4 and jQuery libraries like datepicker.
 
 Postman was used to test the API calls.
 
@@ -17,19 +17,19 @@ Postman was used to test the API calls.
 
 
 ### Home
-The main page shows some basic statistics of the system (total vouchers, unused vouchers and used vouchers), and below them a list of the created vouchers displayed in a dynamic table that allows sorting by clicking on the headers, changing the number of results per page and run a quick search.
+The main page shows some basic statistics of the system (total vouchers, unused vouchers and used vouchers), and below them a list of the created vouchers displayed in a dynamic table that allows changing the number of results per page and run a quick search.
 
-There’s also a blue *Add vouchers* button to create new offers and vouchers.
+There’s also a blue *Add vouchers* button to create new vouchers.
 
 ### Add vouchers
-To add new special offer click the blue button that will take you to the *Add vouchers* form. The form only has 3 fields: 2 text boxes for the offer name and discount and a date picker for the expiration date.
+To add new Voucher Code click the blue button that will take you to the *Add vouchers* form. The form only has 2fields:1 select box for chooseing offer and  1 text boxes for date picker for the expiration date.
 
-All fields are mandatory and after submitting them a new special offer is created in the database and a new voucher for each recipient is generated.
+All fields are mandatory and after submitting them  a new voucher for each recipient is generated.
 
 ## API Endpoint
 An API endpoint is provided to get a list of the valid vouchers for a given recipient and to redeem a voucher code. Since no authorization system is implemented, no API key or token are required.
 
-The API endpoint will be available at **http://localhost:8000/api** while the Laravel server is running
+The API endpoint will be available at **http://localhost:8000/api**  
 
 ### GET vouchers/{email_address}
 If the provided email address is valid and corresponds to a registered recipient, a list of the valid vouchers for that recipient will be retrieved. The retrieved list include the special offer name, voucher code, discount and expiration date.
@@ -45,9 +45,7 @@ To test this application, testing code has been written both in Laravel, which u
 Tests run using john@doe.com recipient, so seeding the database, or manually creating this recipient and some vouchers for it, is required before testing.
 
 ### Testing in Lumen
-To run the test cases for Laravel open a command line prompt, go to the project folder and run `./vendor/bin/phpunit`
-
-Laravel tests for response codes on the different URLs and API calls, views display and form validations for the *Add vouchers* form.
+To run the test cases  open a command line prompt, go to the project folder and run `./vendor/bin/phpunit`
 
 Postman collection has further testing for the API calls.
 
@@ -57,6 +55,3 @@ The Postman collection found in the *docs* folder includes API calls and testing
 You can use the `GET vouchers` call to get the list of valid voucher codes and use one of those in the `POST voucher` call, using the same recipient email.
 
 If the `POST voucher` call is successful, it means the voucher was used and trying to use it again will throw an *“Invalid voucher code error”*, so it requires a new valid voucher code each time it’s successfully tested.
-
-### Test instance
-A test instance was enabled and configured for this project. Can see it working at http://35.163.165.1:8000/
