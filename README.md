@@ -1,5 +1,4 @@
 # Voucher Pool Microservice
-### PHP development task for VanHack
 
 ## General description
 The voucher pool microservice was developed using lumen 5.6, Bootstrap 4 and jQuery libraries Dynatable for dynamic tables and datepicker.

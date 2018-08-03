@@ -1,11 +1,18 @@
 <?php
 
+/**
+ * Class VoucherCodeApiTest
+ */
 
 class VoucherCodeApiTest extends TestCase
 {
-    /**
+    public function testVerifyVoucherCodeWithoutParameters()
+    {
+        $response = $this->call('GET', '/api/vouchers');
+        $this->assertEquals(422, $response->status());
 
-     */
+    }
+
     public function testVerifyVoucherCode()
     {
         $this->json('POST', '/api/verify', ['email' => 'hoda.hussin@gmail.com'])
@@ -27,14 +34,7 @@ class VoucherCodeApiTest extends TestCase
                 ]
             ]);
     }
-    
 
-    public function testVerifyVoucherCodeWithoutParameters()
-    {
-        $response = $this->call('GET', '/api/vouchers');
-        $this->assertEquals(422, $response->status());
-
-    }
 
     public function testVerifyVoucherCodeWithoutCode()
     {
@@ -47,12 +47,7 @@ class VoucherCodeApiTest extends TestCase
 
     }
 
-    public function testVerifyVoucherCodeEmailInvalid()
-    {
-        $response = $this->call('GET', '/api/vouchers');
-        $this->assertEquals(422, $response->status());
 
-    }
 
     public function testGetVoucherCodeWithoutParameters()
     {
