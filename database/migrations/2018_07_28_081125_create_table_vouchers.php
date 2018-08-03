@@ -15,7 +15,7 @@ class CreateTableVouchers extends Migration
     {
         Schema::create('voucher_codes',function (Blueprint $table){
             $table->increments('id');
-            $table->string('code')->unique();
+            $table->char('code',60)->unique();
             $table->integer('recipient_id')->references('id')->on('recipients')->onDelete('cascade');
             $table->integer('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->string('expire_date');

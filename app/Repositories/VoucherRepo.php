@@ -112,8 +112,8 @@ class VoucherRepo
         $errors = $validator->errors();
         $errors = $errors->all();
         if (count($errors)) {
-            echo $this->fail(422, $errors);
-            exit();
+           return $this->fail(422, $errors);
+           exit();
         }
     }
 

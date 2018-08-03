@@ -8,22 +8,8 @@
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script href="{{url('assets/js/index.js')}}" ></script>
-    <script>
-        $(function () {
-            $("#datepicker").datepicker({
-                dateFormat: 'dd-mm-yy',
-                minDate: new Date()
-            });
+    <script src="{{url('assets/js/index.js')}}" type="application/javascript" ></script>
 
-            $("#search").keyup(function(e){
-                if(e.keyCode == 13) {
-                    search = $("#search").val();
-                    window.location = "http://voucher.test/?q="+search;
-                }
-            })
-        });
-    </script>
 
 
 </head>

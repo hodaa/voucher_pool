@@ -3,11 +3,15 @@
 
 class VoucherCodeTest extends TestCase{
 
-    public function testExample()
-    {
-//        $this->assertTrue(true);
+
+    function testHome(){
+        $response = $this->call('GET', '/');
+        $this->assertEquals(200, $response->status());
     }
     function testSearch(){
+        $response = $this->call('GET', '/?q=rjf');
+        $this->assertEquals(200, $response->status());
+
 //        $response = $this->get(route('home'));
 //
 //        $response->assertResponseStatus(200);

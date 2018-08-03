@@ -16,7 +16,7 @@ class CreateTableRecipients extends Migration
         Schema::create('recipients',function (Blueprint $table){
             $table->increments('id');
             $table->string('name');
-            $table->string('email')->unique();
+            $table->char('email',100)->unique();
             $table->timestamps();
 
 

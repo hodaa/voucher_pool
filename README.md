@@ -14,8 +14,7 @@ Postman was used to test the API calls.
 5. In a command line window go to the  project folder and update dependencies running `composer update`.
 6. Still in project folder run `php artisan migrate` to create the tables in the database.
 7. Optionally seed the database by running `php artisan db:seed`. This creates 50 recipients, 5 special offers and the corresponding voucher codes. One of the recipients created is hoda.hussin@gmail.com, which is used later for testing.
-8. Now run `php artisan key:generate` to generate a unique encryption key for this Laravel instance.
-9. Run `php -S localhost:8000 -t ./public` in the command line to start Laravel server. Now you can enter your web browser and go to **http://localhost:8000** to see it working.
+8. Run `php -S localhost:8000 -t ./public` in the command line to start Laravel server. Now you can enter your web browser and go to **http://localhost:8000** to see it working.
 
 
 ### Home

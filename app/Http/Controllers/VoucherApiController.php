@@ -6,6 +6,7 @@ use App\Traits\Payload;
 use App\Repositories\VoucherRepo;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Validator;
 
 class VoucherApiController
 {
@@ -25,10 +26,14 @@ class VoucherApiController
      */
     public function verify(Request $request)
     {
-        $this->voucherRepo->validateApi($request->all(), [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'code' => 'required|min:6'
         ]);
+        $errors = $validator->errors();
+        if (count($errors)) {
+            return $this->fail(422, $errors->all());
+        }
 
         $voucher = $this->voucherRepo->verifyVoucherCode($request);
         if ($voucher !== null) {
@@ -40,15 +45,20 @@ class VoucherApiController
         }
     }
 
-    /** get all vouchers by  for recipients  by email
+    /**
      * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
 
     public function getVouchersByRecipient(Request $request)
     {
-        $this->voucherRepo->validateApi($request->all(), [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
         ]);
+        $errors = $validator->errors();
+        if (count($errors)) {
+            return $this->fail(422, $errors->all());
+        }
         $codes = $this->voucherRepo->getVoucherByEmail($request);
         if (count($codes)) {
             return $this->success(200, $codes);
