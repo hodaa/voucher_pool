@@ -3,8 +3,9 @@
 
 class VoucherCodeApiTest extends TestCase
 {
+    /**
 
-
+     */
     public function testVerifyVoucherCode()
     {
         $this->json('POST', '/api/verify', ['email' => 'hoda.hussin@gmail.com'])
@@ -14,6 +15,19 @@ class VoucherCodeApiTest extends TestCase
                     "The code field is required."
                 ]]);
     }
+
+    public function testVerifyVoucherCodeInvalidCode()
+    {
+        $this->json('POST', '/api/verify',
+            ['email' => 'hoda.hussin@gmail.com', 'code' => '4444'])
+            ->seeJson(["status" => "OK",
+                "code" => 422,
+                "message" => [
+                    "The code must be at least 6 characters."
+                ]
+            ]);
+    }
+    
 
     public function testVerifyVoucherCodeWithoutParameters()
     {
@@ -30,7 +44,6 @@ class VoucherCodeApiTest extends TestCase
             "message" => [
                 "The email field is required."
             ]]);
-//        $this->assertEquals(422, $response->status());
 
     }
 

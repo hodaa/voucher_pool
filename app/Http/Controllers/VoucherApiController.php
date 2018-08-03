@@ -39,9 +39,9 @@ class VoucherApiController
         if ($voucher !== null) {
             $voucher->update(['used_on' => Carbon::now()]);
             $discount = $voucher->offer->discount;
-            echo $this->success(200, ["offer_discount" => $discount]);
+            return $this->success(200, ["offer_discount" => $discount]);
         } else {
-            echo $this->fail(500, "This Voucher is not  valid");
+            return $this->fail(500, "This Voucher is Invalid");
         }
     }
 

@@ -1,0 +1,243 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Vouchers",
+		"_postman_id": "acc592a8-f897-0373-7e71-e72edae60190",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"description": "",
+			"item": [
+				{
+					"name": "http://localhost:8000/api/vouchers/?email=hoda.hussin@gmail.com",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8000/api/vouchers/?email=hoda.hussin@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"vouchers",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "hoda.hussin@gmail.com",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/vouchers/?email=hod",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8000/api/vouchers/?email=hod",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"vouchers",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "hod",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/vouchers/?email=hoda@gmail.com",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8000/api/vouchers/?email=hoda@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"vouchers",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "hoda@gmail.com",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/vouchers",
+					"request": {
+						"url": "http://localhost:8000/api/vouchers",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST",
+			"description": "",
+			"item": [
+				{
+					"name": "localhost:8000/api/verify?email=hoda.hussin@gmail.com&code=GCDMpg03",
+					"request": {
+						"url": {
+							"raw": "localhost:8000/api/verify?email=hoda.hussin@gmail.com&code=GCDMpg03",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "hoda.hussin@gmail.com",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "code",
+									"value": "GCDMpg03",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8000/api/verify?email=hoda.huss@gmail.com&code=4444",
+					"request": {
+						"url": {
+							"raw": "localhost:8000/api/verify?email=hoda.huss@gmail.com&code=4444",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "hoda.huss@gmail.com",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "code",
+									"value": "4444",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8000/api/verify?email=hoda.huss@gmail.com",
+					"request": {
+						"url": {
+							"raw": "localhost:8000/api/verify?email=hoda.huss@gmail.com",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "hoda.huss@gmail.com",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8000/api/verify",
+					"request": {
+						"url": "localhost:8000/api/verify",
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
