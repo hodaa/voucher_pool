@@ -84,22 +84,14 @@ class VoucherRepo
     }
 
 
-    /**
-     * @param $request
+    /** get Code for this user and not used
+     * @param array $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function verifyVoucherCode($request)
+    public function verifyVoucherCode(Array $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'code' => 'required|min:6'
-        ]);
-        $errors = $validator->errors();
-        if (count($errors)) {
-            return $this->fail(422, $errors->all());
-        }
-
-        $code = $request->input('code');
-        $email = $request->input('email');
+        $code = $request['code'];
+        $email = $request['email'];
         $voucher = VoucherCode::with('offer')->where('code', $code)
             ->whereNull('used_on')
             ->whereHas('recipient', function ($q) use ($email) {
@@ -108,13 +100,8 @@ class VoucherRepo
 
         if ($voucher !== null) {
             $voucher->update(['used_on' => Carbon::now()]);
-            $discount = $voucher->offer->discount;
-            return $this->success(200, ["offer_discount" => $discount]);
-        } else {
-            return $this->fail(500, "This Voucher is Invalid");
+            return $voucher->offer;
         }
-
-
     }
 
 
